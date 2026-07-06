@@ -1,0 +1,30 @@
+{
+  "name": "farmbridge-backend",
+  "version": "1.0.0",
+  "description": "Backend for FarmBridge Project",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "keywords": [
+    "farmbridge",
+    "nodejs",
+    "express",
+    "postgresql"
+  ],
+  "author": "Mohana Sri Sai Subrahmanyam Sure",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.18.1",
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
