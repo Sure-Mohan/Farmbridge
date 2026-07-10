@@ -3,8 +3,7 @@ import React, { useEffect, useState } from "react";
 import CurrentWeatherCard from "../../components/weather/CurrentWeatherCard";
 import ForecastCard from "../../components/weather/ForecastCard";
 import RecommendationCard from "../../components/weather/RecommendationCard";
-import AICropRecommendation from "../../components/weather/AICropRecommendation";
-
+import AiCropRecommendation from "../../components/weather/AiCropRecommendation";
 import { weatherService } from "../../services/weatherService";
 
 const Weather = () => {
@@ -20,17 +19,15 @@ const Weather = () => {
         getUserLocation();
     }, []);
 
-    // ===========================
-    // GET USER LOCATION
-    // ===========================
 
+    // GET USER LOCATION
     const getUserLocation = () => {
 
         if (!navigator.geolocation) {
 
             alert("Geolocation is not supported.");
-
             return;
+
         }
 
         navigator.geolocation.getCurrentPosition(
@@ -58,55 +55,57 @@ const Weather = () => {
 
     };
 
-    // ===========================
-    // LOAD WEATHER
-    // ===========================
 
+    // LOAD WEATHER
     const loadWeather = async (lat, lon) => {
 
         try {
 
             setLoading(true);
 
-            // CURRENT WEATHER
+
             const currentWeather =
                 await weatherService.getCurrentWeather(lat, lon);
 
+
             console.log("Current Weather:", currentWeather);
 
+
             setWeather(currentWeather);
+
 
             setLocationName(
                 `${currentWeather.location || "Unknown"}, ${currentWeather.country || ""}`
             );
 
-            // FORECAST
+
             const forecastData =
                 await weatherService.getForecast(lat, lon);
 
+
             setForecast(forecastData);
 
-            // NORMAL RECOMMENDATION
+
             try {
 
                 const advice =
                     await weatherService.getRecommendation(lat, lon);
 
+
                 setRecommendation(
                     advice.recommendation || []
                 );
 
-            }
 
-            catch (error) {
+            } catch (error) {
 
                 console.log("Recommendation API unavailable");
 
             }
 
-            // ===========================
-            // AI RECOMMENDATION
-            // ===========================
+
+
+            // AI CROP RECOMMENDATION
 
             const weatherData = {
 
@@ -122,34 +121,45 @@ const Weather = () => {
 
             };
 
-            console.log("Sending AI Data:", weatherData);
+
+            console.log(
+                "Sending AI Data:",
+                weatherData
+            );
+
 
             const aiResponse =
                 await weatherService.getCropRecommendation(
                     weatherData
                 );
 
-            console.log("AI Response:", aiResponse);
+
+            console.log(
+                "AI Response:",
+                aiResponse
+            );
+
 
             setAiRecommendation(
                 aiResponse.recommendation || ""
             );
 
-        }
 
-        catch (error) {
+        } catch (error) {
 
-            console.error("Weather Error:", error);
+            console.error(
+                "Weather Error:",
+                error
+            );
 
-        }
-
-        finally {
+        } finally {
 
             setLoading(false);
 
         }
 
     };
+
 
     if (loading) {
 
@@ -165,9 +175,11 @@ const Weather = () => {
 
     }
 
+
     return (
 
         <div className="container mt-4">
+
 
             <div className="d-flex justify-content-between align-items-center mb-4">
 
@@ -177,41 +189,54 @@ const Weather = () => {
                         🌦 Farm Weather
                     </h2>
 
+
                     <p className="text-muted">
                         📍 {locationName || "Fetching location..."}
                     </p>
 
+
                 </div>
+
 
                 <button
                     className="btn btn-success"
                     onClick={getUserLocation}
                 >
+
                     🔄 Refresh
+
                 </button>
 
+
             </div>
+
+
 
             <CurrentWeatherCard
                 weather={weather}
             />
 
+
             <RecommendationCard
                 recommendation={recommendation}
             />
 
-            <AICropRecommendation
+
+            <AiCropRecommendation
                 recommendation={aiRecommendation}
             />
+
 
             <ForecastCard
                 forecast={forecast}
             />
+
 
         </div>
 
     );
 
 };
+
 
 export default Weather;
