@@ -1,32 +1,41 @@
 const express = require("express");
+
 const router = express.Router();
 
+
 const {
-  addEquipment,
-  getEquipment,
-  getSingleEquipment,
-  editEquipment,
-  removeEquipment,
-} = require("../controllers/equipmentController");
 
-const authMiddleware = require("../middleware/authMiddleware");
+addEquipment,
+getEquipment,
+getSingleEquipment,
+editEquipment,
+removeEquipment
 
-// All Equipment routes are protected
+}=require("../controllers/equipmentController");
+
+
+const authMiddleware=require("../middleware/authMiddleware");
+
+
+
 router.use(authMiddleware);
 
-// Add Equipment
-router.post("/", addEquipment);
 
-// Get All Equipment
-router.get("/", getEquipment);
 
-// Get Equipment by ID
-router.get("/:id", getSingleEquipment);
+router.post("/",addEquipment);
 
-// Update Equipment
-router.put("/:id", editEquipment);
 
-// Delete Equipment
-router.delete("/:id", removeEquipment);
+router.get("/",getEquipment);
 
-module.exports = router;
+
+router.get("/:id",getSingleEquipment);
+
+
+router.put("/:id",editEquipment);
+
+
+router.delete("/:id",removeEquipment);
+
+
+
+module.exports=router;

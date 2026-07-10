@@ -1,8 +1,9 @@
 const express = require("express");
+
 const router = express.Router();
 
-const { fetchMarketPrice } = require("../controllers/priceController");
+const { getMarketPrice } = require("../controllers/priceController");
 
-router.get("/", fetchMarketPrice);
+router.get("/", getMarketPrice);
 
 module.exports = router;

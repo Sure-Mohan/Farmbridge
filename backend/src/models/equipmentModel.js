@@ -130,9 +130,9 @@ const deleteEquipment = async (id, user_id) => {
 };
 
 module.exports = {
-  createEquipment,
-  getUserEquipment,
-  getEquipmentById,
-  updateEquipment,
-  deleteEquipment,
+createEquipment,
+getEquipmentByUser: getUserEquipment,
+getEquipmentById,
+updateEquipment,
+deleteEquipment
 };

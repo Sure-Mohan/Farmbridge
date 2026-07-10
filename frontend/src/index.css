@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary-green: #2E7D32;
+  --secondary-green: #A5D6A7;
+  --bg-light: #F5F7FA;
+  --card-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-light);
+  color: #333;
+}
+
+a {
+  text-decoration: none;
+}
+
+.btn-primary {
+  background-color: var(--primary-green);
+  border-color: var(--primary-green);
+}
+
+.btn-primary:hover {
+  background-color: #1B5E20;
+  border-color: #1B5E20;
+}
+
+.btn-outline-primary {
+  border-color: var(--primary-green);
+  color: var(--primary-green);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary-green);
+  border-color: var(--primary-green);
+}
+
+.card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.text-primary-green {
+  color: var(--primary-green);
+}
+
+.bg-primary-green {
+  background-color: var(--primary-green);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-green);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #1B5E20;
+}

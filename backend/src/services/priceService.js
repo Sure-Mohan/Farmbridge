@@ -1,43 +1,163 @@
 const axios = require("axios");
 
-const getMarketPrice = async (crop) => {
-  try {
-    const apiKey = process.env.DATA_GOV_API_KEY;
-    const resourceId = process.env.DATA_GOV_RESOURCE_ID;
+// --------------------------------------
+// Crop Name Mapping
+// --------------------------------------
 
-    if (!apiKey || !resourceId) {
-      throw new Error("Missing API key or Resource ID in .env");
-    }
+const cropAliases = {
+    rice: "paddy",
+    paddy: "paddy",
 
-    const url = `https://api.data.gov.in/resource/${resourceId}?api-key=${apiKey}&format=json&limit=1000`;
+    wheat: "wheat",
 
-    const response = await axios.get(url);
+    maize: "maize",
+    corn: "maize",
 
-    const records = response.data.records;
+    onion: "onion",
 
-    if (!records || records.length === 0) {
-      return null;
-    }
+    tomato: "tomato",
 
-    const cropData = records.find((item) =>
-      item.commodity?.toLowerCase().includes(crop.toLowerCase())
-    );
+    potato: "potato",
 
-    if (!cropData) return null;
+    banana: "banana",
 
-    return {
-      crop: cropData.commodity,
-      market: cropData.market,
-      state: cropData.state,
-      minPrice: cropData.min_price,
-      maxPrice: cropData.max_price,
-      modalPrice: cropData.modal_price,
-    };
+    mango: "mango",
 
-  } catch (error) {
-    console.error("Price API Error:", error.response?.data || error.message);
-    return null;
-  }
+    groundnut: "groundnut",
+    peanut: "groundnut",
+
+    chilli: "green chilli",
+    chili: "green chilli",
+    "green chilli": "green chilli",
+
+    brinjal: "brinjal",
+    eggplant: "brinjal",
+
+    cabbage: "cabbage",
+
+    cauliflower: "cauliflower",
+
+    pumpkin: "pumpkin",
+
+    cucumber: "cucumbar",
+
+    ridgegourd: "ridgeguard",
+    "ridge gourd": "ridgeguard",
+
+    bottlegourd: "bottle gourd",
+    "bottle gourd": "bottle gourd",
+
+    bhindi: "bhindi",
+    okra: "bhindi",
+    "lady finger": "bhindi",
+
+    carrot: "carrot",
+
+    beetroot: "beetroot",
+
+    amaranthus: "amaranthus"
 };
 
-module.exports = { getMarketPrice };
+// --------------------------------------
+// Get Market Price
+// --------------------------------------
+
+const getMarketPrice = async (crop) => {
+
+    try {
+
+        const apiKey = process.env.DATA_GOV_API_KEY;
+        const resourceId = process.env.DATA_GOV_RESOURCE_ID;
+
+        if (!apiKey || !resourceId) {
+            throw new Error("DATA_GOV_API_KEY or DATA_GOV_RESOURCE_ID missing");
+        }
+
+        const url =
+            `https://api.data.gov.in/resource/${resourceId}?api-key=${apiKey}&format=json&limit=1000`;
+
+        const response = await axios.get(url);
+
+        const records = response.data.records || [];
+
+        console.log("Total Records:", records.length);
+
+        if (records.length === 0) {
+            return null;
+        }
+
+        //-------------------------------------
+        // Normalize user input
+        //-------------------------------------
+
+        const searchCrop =
+            cropAliases[crop.trim().toLowerCase()] ||
+            crop.trim().toLowerCase();
+
+        //-------------------------------------
+        // Find crop
+        //-------------------------------------
+
+        const cropData = records.find(item => {
+
+            if (!item.commodity) return false;
+
+            const commodity = item.commodity.toLowerCase();
+
+            return commodity.includes(searchCrop);
+
+        });
+
+        if (!cropData) {
+
+            console.log("Crop not found:", crop);
+
+            console.log(
+                "Available Crops:",
+                [...new Set(records.map(r => r.commodity))]
+            );
+
+            return null;
+
+        }
+
+        //-------------------------------------
+        // Return formatted data
+        //-------------------------------------
+
+        return {
+
+            crop: cropData.commodity,
+
+            market: cropData.market,
+
+            district: cropData.district || "",
+
+            state: cropData.state,
+
+            minPrice: Number(cropData.min_price),
+
+            maxPrice: Number(cropData.max_price),
+
+            modalPrice: Number(cropData.modal_price)
+
+        };
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Price API Error:",
+            error.response?.data || error.message
+        );
+
+        return null;
+
+    }
+
+};
+
+module.exports = {
+    getMarketPrice
+};

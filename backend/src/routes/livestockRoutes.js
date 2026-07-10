@@ -1,24 +1,34 @@
 const express = require("express");
+
 const router = express.Router();
 
-const auth = require("../middleware/authMiddleware");
 
 const {
-  addLivestock,
-  getLivestock,
-  getLivestockById,
-  updateLivestock,
-  deleteLivestock,
+    createLivestock,
+    getLivestock,
+    getSingleLivestock,
+    editLivestock,
+    removeLivestock
 } = require("../controllers/livestockController");
 
-router.post("/", auth, addLivestock);
 
-router.get("/", auth, getLivestock);
+const authMiddleware=require("../middleware/authMiddleware");
 
-router.get("/:id", auth, getLivestockById);
 
-router.put("/:id", auth, updateLivestock);
 
-router.delete("/:id", auth, deleteLivestock);
+router.use(authMiddleware);
 
-module.exports = router;
+
+router.post("/", createLivestock);
+
+router.get("/", getLivestock);
+
+router.get("/:id", getSingleLivestock);
+
+router.put("/:id", editLivestock);
+
+router.delete("/:id", removeLivestock);
+
+
+
+module.exports=router;

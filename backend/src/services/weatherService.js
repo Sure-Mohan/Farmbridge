@@ -1,23 +1,106 @@
 const axios = require("axios");
 
-const getWeather = async (city) => {
-  try {
-    const apiKey = process.env.WEATHER_API_KEY;
 
-    console.log("API KEY:", apiKey); // 🔥 DEBUG LINE
+const API_KEY = process.env.WEATHER_API_KEY;
 
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
 
-    console.log("URL:", url); // 🔥 DEBUG LINE
+const BASE_URL =
+    "https://api.openweathermap.org/data/2.5";
 
-    const response = await axios.get(url);
 
-    return response.data;
 
-  } catch (error) {
-    console.error("Weather API Error:", error.response?.data || error.message);
-    return null;
-  }
+// Current Weather
+
+const getCurrentWeather = async (lat, lon) => {
+
+
+    try {
+
+
+        const response = await axios.get(
+
+            `${BASE_URL}/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
+
+        );
+
+
+        return response.data;
+
+
+    }
+
+    catch(error){
+
+
+        console.error(
+            "Weather Error:",
+            error.response?.data || error.message
+        );
+
+
+        throw new Error(
+            "Unable to fetch weather"
+        );
+
+
+    }
+
+
 };
 
-module.exports = { getWeather };
+
+
+
+
+
+// Forecast
+
+const getForecast = async (lat, lon) => {
+
+
+    try {
+
+
+        const response = await axios.get(
+
+            `${BASE_URL}/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
+
+        );
+
+
+        return response.data;
+
+
+    }
+
+    catch(error){
+
+
+        console.error(
+            "Forecast Error:",
+            error.response?.data || error.message
+        );
+
+
+        throw new Error(
+            "Unable to fetch forecast"
+        );
+
+
+    }
+
+
+};
+
+
+
+
+
+
+module.exports = {
+
+    getCurrentWeather,
+
+    getForecast
+
+};

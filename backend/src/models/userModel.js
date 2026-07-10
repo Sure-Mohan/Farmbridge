@@ -1,32 +1,110 @@
 const pool = require("../config/db");
 
-// Create user
+// =======================
+// CREATE USER
+// =======================
+
 const createUser = async (user) => {
-  const { full_name, email, password, phone, role } = user;
 
-  const query = `
-    INSERT INTO users (full_name, email, password, phone, role)
-    VALUES ($1, $2, $3, $4, $5)
-    RETURNING id, full_name, email, phone, role;
-  `;
+    const {
+        full_name,
+        email,
+        password,
+        phone,
+        role
+    } = user;
 
-  const values = [full_name, email, password, phone, role];
+    const result = await pool.query(
+        `
+        INSERT INTO users
+        (
+            full_name,
+            email,
+            password,
+            phone,
+            role
+        )
+        VALUES($1,$2,$3,$4,$5)
+        RETURNING id, full_name, email, phone, role;
+        `,
+        [
+            full_name,
+            email,
+            password,
+            phone,
+            role
+        ]
+    );
 
-  const result = await pool.query(query, values);
-  return result.rows[0];
+    return result.rows[0];
 };
 
-// Find user by email
-const findUserByEmail = async (email) => {
-  const result = await pool.query(
-    "SELECT * FROM users WHERE email = $1",
-    [email]
-  );
+// =======================
+// FIND USER BY EMAIL
+// =======================
 
-  return result.rows[0];
+const findUserByEmail = async (email) => {
+
+    const result = await pool.query(
+        `
+        SELECT *
+        FROM users
+        WHERE email=$1;
+        `,
+        [email]
+    );
+
+    return result.rows[0];
+};
+
+// =======================
+// UPDATE PASSWORD
+// =======================
+
+const updatePasswordByEmail = async (email, password) => {
+
+    const result = await pool.query(
+        `
+        UPDATE users
+        SET password=$1
+        WHERE email=$2
+        RETURNING id;
+        `,
+        [password, email]
+    );
+
+    return result.rows[0];
+};
+const updatePasswordById = async (id, password) => {
+
+    const result = await pool.query(
+
+        `
+        UPDATE users
+        SET password=$1
+        WHERE id=$2
+        RETURNING id;
+        `,
+
+        [
+            password,
+            id
+        ]
+
+    );
+
+    return result.rows[0];
+
 };
 
 module.exports = {
-  createUser,
-  findUserByEmail,
+
+    createUser,
+
+    findUserByEmail,
+
+    updatePasswordByEmail,
+
+    updatePasswordById
+
 };

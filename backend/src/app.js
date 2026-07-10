@@ -8,6 +8,11 @@ const smartRoutes = require("./routes/smartRoutes");
 const priceRoutes = require("./routes/priceRoutes");
 const livestockRoutes = require("./routes/livestockRoutes");
 const equipmentRoutes = require("./routes/equipmentRoutes");
+const analyticsRoutes = require("./routes/analyticsRoutes");
+const alertRoutes=require("./routes/alertRoutes");
+const smartAlertRoutes = require("./routes/smartAlertRoutes");
+const notificationRoutes = require("./routes/notificationRoutes");
+const aiRoutes = require("./routes/aiRoutes");
 const app = express();
 
 // =====================
@@ -37,7 +42,11 @@ app.use("/api/smart", smartRoutes);
 app.use("/api/price", priceRoutes);
 app.use("/api/livestock", livestockRoutes);
 app.use("/api/equipment", equipmentRoutes);
-
+app.use("/api/analytics", analyticsRoutes);
+app.use("/api/alerts",alertRoutes);
+app.use("/api/smart-alerts", smartAlertRoutes);
+app.use("/api/notifications", notificationRoutes);
+app.use("/api/ai", aiRoutes);
 // =====================
 // 404 Handler
 // =====================

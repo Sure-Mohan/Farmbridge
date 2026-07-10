@@ -1,12 +1,65 @@
 const express = require("express");
-const router = express.Router();
 
-const { createCrop, getCrops } = require("../controllers/cropController");
+const router = express.Router();
 
 const authMiddleware = require("../middleware/authMiddleware");
 
-// Protected Routes
-router.post("/", authMiddleware, createCrop);
-router.get("/", authMiddleware, getCrops);
+const {
+    createCrop,
+    getCrops,
+    getCrop,
+    editCrop,
+    removeCrop
+} = require("../controllers/cropController");
+
+// =========================
+// CREATE CROP
+// =========================
+
+router.post(
+    "/",
+    authMiddleware,
+    createCrop
+);
+
+// =========================
+// GET ALL CROPS
+// =========================
+
+router.get(
+    "/",
+    authMiddleware,
+    getCrops
+);
+
+// =========================
+// GET SINGLE CROP
+// =========================
+
+router.get(
+    "/:id",
+    authMiddleware,
+    getCrop
+);
+
+// =========================
+// UPDATE CROP
+// =========================
+
+router.put(
+    "/:id",
+    authMiddleware,
+    editCrop
+);
+
+// =========================
+// DELETE CROP
+// =========================
+
+router.delete(
+    "/:id",
+    authMiddleware,
+    removeCrop
+);
 
 module.exports = router;
